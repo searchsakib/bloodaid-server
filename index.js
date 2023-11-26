@@ -36,6 +36,14 @@ app.get('/', (req, res) => {
   res.send('BloodAid is Here!');
 });
 
+// User related API
+//! post for user from register
+app.post('/users', async (req, res) => {
+  const addJob = req.body;
+  const result = await userInfoCollection.insertOne(addJob);
+  res.send(result);
+});
+
 // for all job data
 // app.get('/jobs', async (req, res) => {
 //   const cursor = jobsCollection.find();
