@@ -51,16 +51,16 @@ app.get('/users', async (req, res) => {
   res.send(result);
 });
 
+// for updating profile data w/ mongoDB with id
+app.get('/dashboard/update-profile/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await userInfoCollection.findOne(query);
+  res.send(result);
+});
+
 // for one job data with mongoDB id
 // app.get('/jobs/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const query = { _id: new ObjectId(id) };
-//   const result = await jobsCollection.findOne(query);
-//   res.send(result);
-// });
-
-// for one posted job data w/ mongoDB id from jobsCollection
-// app.get('/update-job/:id', async (req, res) => {
 //   const id = req.params.id;
 //   const query = { _id: new ObjectId(id) };
 //   const result = await jobsCollection.findOne(query);
