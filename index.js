@@ -44,12 +44,12 @@ app.post('/users', async (req, res) => {
   res.send(result);
 });
 
-// for all job data
-// app.get('/jobs', async (req, res) => {
-//   const cursor = jobsCollection.find();
-//   const result = await cursor.toArray();
-//   res.send(result);
-// });
+// for all users data
+app.get('/users', async (req, res) => {
+  const cursor = userInfoCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+});
 
 // for one job data with mongoDB id
 // app.get('/jobs/:id', async (req, res) => {
