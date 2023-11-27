@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 });
 const dbConnect = async () => {
   try {
-    await client.connect();
+    // await client.connect();
     console.log('Database Connected!');
   } catch (error) {
     console.log(error.name, error.message);
@@ -31,6 +31,9 @@ const dbConnect = async () => {
 dbConnect();
 
 const userInfoCollection = client.db('bloodAid').collection('userInfo');
+const donationRequestCollection = client
+  .db('bloodAid')
+  .collection('donationRequest');
 
 app.get('/', (req, res) => {
   res.send('BloodAid is Here!');
@@ -39,8 +42,8 @@ app.get('/', (req, res) => {
 // User related API
 //! post for user from register
 app.post('/users', async (req, res) => {
-  const addJob = req.body;
-  const result = await userInfoCollection.insertOne(addJob);
+  const addUser = req.body;
+  const result = await userInfoCollection.insertOne(addUser);
   res.send(result);
 });
 
@@ -56,6 +59,44 @@ app.get('/dashboard/update-profile/:id', async (req, res) => {
   const id = req.params.id;
   const query = { _id: new ObjectId(id) };
   const result = await userInfoCollection.findOne(query);
+  res.send(result);
+});
+
+// for updating user profile
+app.put('/dashboard/update-profile/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const options = { upsert: true };
+  const updateProfile = req.body;
+  const job = {
+    $set: {
+      name: updateProfile.name,
+      photo: updateProfile.photo,
+      email: updateProfile.email,
+      blood: updateProfile.blood,
+      district: updateProfile.district,
+      upazila: updateProfile.upazila,
+      status: updateProfile.status,
+      role: updateProfile.role,
+    },
+  };
+  const result = await userInfoCollection.updateOne(filter, job, options);
+  res.send(result);
+});
+
+//! Donation Related API
+
+// create donation request page data
+app.post('/dashboard/create-donation-request', async (req, res) => {
+  const addDonationReq = req.body;
+  const result = await donationRequestCollection.insertOne(addDonationReq);
+  res.send(result);
+});
+
+// for all donation requests
+app.get('/dashboard/create-donation-request', async (req, res) => {
+  const cursor = donationRequestCollection.find();
+  const result = await cursor.toArray();
   res.send(result);
 });
 
@@ -109,27 +150,6 @@ app.get('/dashboard/update-profile/:id', async (req, res) => {
 //   const addJob = req.body;
 //   console.log(addJob);
 //   const result = await jobsCollection.insertOne(addJob);
-//   res.send(result);
-// });
-
-// for updating jobscollection
-// app.put('/my-posted-jobs/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const filter = { _id: new ObjectId(id) };
-//   const options = { upsert: true };
-//   const updateJob = req.body;
-//   const job = {
-//     $set: {
-//       employer_email: updateJob.employer_email,
-//       job_title: updateJob.job_title,
-//       description: updateJob.description,
-//       category: updateJob.category,
-//       deadline: updateJob.deadline,
-//       min_price: updateJob.min_price,
-//       max_price: updateJob.max_price,
-//     },
-//   };
-//   const result = await jobsCollection.updateOne(filter, job, options);
 //   res.send(result);
 // });
 
