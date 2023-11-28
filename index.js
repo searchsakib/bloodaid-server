@@ -101,6 +101,46 @@ app.get('/dashboard/create-donation-request', async (req, res) => {
   res.send(result);
 });
 
+// for getting update donation requests
+app.get('/dashboard/my-donation-requests-update/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await donationRequestCollection.findOne(query);
+  res.send(result);
+});
+
+// for updating  donation request
+app.put('/dashboard/my-donation-requests-update/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const options = { upsert: true };
+  const updateDonationReq = req.body;
+  const job = {
+    $set: {
+      requester_name: updateDonationReq.requester_name,
+      requester_email: updateDonationReq.requester_email,
+      recipient_name: updateDonationReq.recipient_name,
+      blood: updateDonationReq.blood,
+
+      recipient_district: updateDonationReq.recipient_district,
+      recipient_upazila: updateDonationReq.recipient_upazila,
+      hospital_name: updateDonationReq.hospital_name,
+      full_address: updateDonationReq.full_address,
+      donation_date: updateDonationReq.donation_date,
+      donation_time: updateDonationReq.donation_time,
+      request_message: updateDonationReq.request_message,
+      status: updateDonationReq.status,
+      // role: updateDonationReq.role,
+    },
+  };
+  const result = await donationRequestCollection.updateOne(
+    filter,
+    job,
+    options
+  );
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
