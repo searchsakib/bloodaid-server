@@ -141,6 +141,14 @@ app.put('/dashboard/my-donation-requests-update/:id', async (req, res) => {
   res.send(result);
 });
 
+// delete from donation req donationRequestCollection
+app.delete('/dashboard/create-donation-request/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await donationRequestCollection.deleteOne(query);
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
