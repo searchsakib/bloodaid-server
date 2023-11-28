@@ -95,10 +95,19 @@ app.post('/dashboard/create-donation-request', async (req, res) => {
 
 // for all donation requests
 app.get('/dashboard/create-donation-request', async (req, res) => {
-  const cursor = donationRequestCollection.find();
-  const result = await cursor.toArray();
+  const email = req.query.requester_email;
+  const query = { requester_email: email };
+  const result = await donationRequestCollection.find(query).toArray();
   res.send(result);
 });
+
+// carts collection
+// app.get('/carts', async (req, res) => {
+//   const email = req.query.email;
+//   const query = { email: email };
+//   const result = await cartCollection.find(query).toArray();
+//   res.send(result);
+// });
 
 // for one job data with mongoDB id
 // app.get('/jobs/:id', async (req, res) => {
