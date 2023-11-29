@@ -162,6 +162,32 @@ app.patch('/dashboard/status/:id', async (req, res) => {
   res.send(result);
 });
 
+// using patch , making inprogress to done donation requests
+app.patch('/dashboard/status-done/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      status: 'done',
+    },
+  };
+  const result = await donationRequestCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
+// using patch , making inprogress to canceled donation requests
+app.patch('/dashboard/status-canceled/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      status: 'canceled',
+    },
+  };
+  const result = await donationRequestCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
