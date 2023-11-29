@@ -214,6 +214,32 @@ app.get('/allDonationReqs', async (req, res) => {
   res.send(result);
 });
 
+// unblocking patch
+app.patch('/dashboard/admin/unblock/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      status: 'active',
+    },
+  };
+  const result = await userInfoCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
+// blocking patch
+app.patch('/dashboard/admin/block/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      status: 'blocked',
+    },
+  };
+  const result = await userInfoCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
