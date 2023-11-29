@@ -240,6 +240,32 @@ app.patch('/dashboard/admin/block/:id', async (req, res) => {
   res.send(result);
 });
 
+// make volunteer patch
+app.patch('/dashboard/admin/make-volunteer/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      role: 'volunteer',
+    },
+  };
+  const result = await userInfoCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
+// make admin patch
+app.patch('/dashboard/admin/make-admin/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      role: 'admin',
+    },
+  };
+  const result = await userInfoCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
