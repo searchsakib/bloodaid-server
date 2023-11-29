@@ -207,6 +207,13 @@ app.get('/users/admin/:email', async (req, res) => {
   res.send({ admin });
 });
 
+// fetching all donation reqs data for admin
+app.get('/allDonationReqs', async (req, res) => {
+  const cursor = donationRequestCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
