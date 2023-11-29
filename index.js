@@ -188,6 +188,25 @@ app.patch('/dashboard/status-canceled/:id', async (req, res) => {
   res.send(result);
 });
 
+//! for useAdmin hook
+
+app.get('/users/admin/:email', async (req, res) => {
+  const email = req.params.email;
+
+  // verifyToken
+  // if (email !== req.decoded.email) {
+  //   return res.status(403).send({ message: 'forbidden access' })
+  // }
+
+  const query = { email: email };
+  const user = await userInfoCollection.findOne(query);
+  let admin = false;
+  if (user) {
+    admin = user?.role === 'admin';
+  }
+  res.send({ admin });
+});
+
 // carts collection
 // app.get('/carts', async (req, res) => {
 //   const email = req.query.email;
