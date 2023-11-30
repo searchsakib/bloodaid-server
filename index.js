@@ -34,6 +34,7 @@ const userInfoCollection = client.db('bloodAid').collection('userInfo');
 const donationRequestCollection = client
   .db('bloodAid')
   .collection('donationRequest');
+const blogCollection = client.db('bloodAid').collection('blogData');
 
 app.get('/', (req, res) => {
   res.send('BloodAid is Here!');
@@ -263,6 +264,22 @@ app.patch('/dashboard/admin/make-admin/:id', async (req, res) => {
     },
   };
   const result = await userInfoCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
+//! Blog Section
+
+// post blog
+app.post('/add-blog', async (req, res) => {
+  const addBlog = req.body;
+  const result = await blogCollection.insertOne(addBlog);
+  res.send(result);
+});
+
+// get all blog data
+app.get('/add-blog', async (req, res) => {
+  const cursor = blogCollection.find();
+  const result = await cursor.toArray();
   res.send(result);
 });
 
