@@ -208,6 +208,25 @@ app.get('/users/admin/:email', async (req, res) => {
   res.send({ admin });
 });
 
+//! for Volunteer hook
+
+app.get('/users/volunteer/:email', async (req, res) => {
+  const email = req.params.email;
+
+  // verifyToken
+  // if (email !== req.decoded.email) {
+  //   return res.status(403).send({ message: 'forbidden access' })
+  // }
+
+  const query = { email: email };
+  const user = await userInfoCollection.findOne(query);
+  let volunteer = false;
+  if (user) {
+    volunteer = user?.role === 'volunteer';
+  }
+  res.send({ volunteer });
+});
+
 // fetching all donation reqs data for admin
 app.get('/allDonationReqs', async (req, res) => {
   const cursor = donationRequestCollection.find();
